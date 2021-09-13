@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:google_maps_place_picker/google_maps_place_picker.dart';
-import 'package:google_maps_place_picker/providers/place_provider.dart';
-import 'package:google_maps_place_picker/providers/search_provider.dart';
-import 'package:google_maps_place_picker/src/components/prediction_tile.dart';
-import 'package:google_maps_place_picker/src/components/rounded_frame.dart';
-import 'package:google_maps_place_picker/src/controllers/autocomplete_search_controller.dart';
+import 'package:place_picker_meet/place_picker_meet.dart';
+import 'package:place_picker_meet/providers/place_provider.dart';
+import 'package:place_picker_meet/providers/search_provider.dart';
+import 'package:place_picker_meet/src/components/prediction_tile.dart';
+import 'package:place_picker_meet/src/components/rounded_frame.dart';
+import 'package:place_picker_meet/src/controllers/autocomplete_search_controller.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:provider/provider.dart';
 

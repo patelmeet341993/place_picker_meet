@@ -6,11 +6,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_maps_place_picker/google_maps_place_picker.dart';
-import 'package:google_maps_place_picker/providers/place_provider.dart';
-import 'package:google_maps_place_picker/src/components/animated_pin.dart';
-import 'package:google_maps_place_picker/src/components/floating_card.dart';
-import 'package:google_maps_place_picker/src/place_picker.dart';
+import 'package:place_picker_meet/place_picker_meet.dart';
+import 'package:place_picker_meet/providers/place_provider.dart';
+import 'package:place_picker_meet/src/components/animated_pin.dart';
+import 'package:place_picker_meet/src/components/floating_card.dart';
+import 'package:place_picker_meet/src/place_picker.dart';
 import 'package:google_maps_webservice/geocoding.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:provider/provider.dart';
