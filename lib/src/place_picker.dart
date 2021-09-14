@@ -23,6 +23,9 @@ class PlacePicker extends StatefulWidget {
     Key? key,
     required this.apiKey,
     this.onPlacePicked,
+
+    required this.floatingButtonVisible,
+    required this.floatingDialougVisible,
     required this.initialPosition,
     this.useCurrentLocation,
     this.desiredLocationAccuracy = LocationAccuracy.high,
@@ -52,6 +55,7 @@ class PlacePicker extends StatefulWidget {
     this.autocompleteTypes,
     this.strictbounds,
     this.region,
+   required this.onPlacePickedLatLng,
     this.selectInitialPosition = false,
     this.resizeToAvoidBottomInset = true,
     this.initialSearchString,
@@ -96,6 +100,7 @@ class PlacePicker extends StatefulWidget {
   final List<Component>? autocompleteComponents;
   final bool? strictbounds;
   final String? region;
+  final Function onPlacePickedLatLng;
 
   /// If true the [body] and the scaffold's floating widgets should size
   /// themselves to avoid the onscreen keyboard whose height is defined by the
@@ -165,6 +170,9 @@ class PlacePicker extends StatefulWidget {
   final bool autocompleteOnTrailingWhitespace;
 
   final bool hidePlaceDetailsWhenDraggingPin;
+
+  final bool floatingButtonVisible;
+  final bool floatingDialougVisible;
 
   @override
   _PlacePickerState createState() => _PlacePickerState();
@@ -401,8 +409,11 @@ class _PlacePickerState extends State<PlacePicker> {
       usePinPointingSearch: widget.usePinPointingSearch,
       usePlaceDetailSearch: widget.usePlaceDetailSearch,
       onMapCreated: widget.onMapCreated,
+      addressDialogVisible: widget.floatingDialougVisible,
+      floatButtonVisible: widget.floatingButtonVisible,
       selectInitialPosition: widget.selectInitialPosition,
       language: widget.autocompleteLanguage,
+      onPlacePickedLatLng: widget.onPlacePickedLatLng,
       forceSearchOnZoomChanged: widget.forceSearchOnZoomChanged,
       hidePlaceDetailsWhenDraggingPin: widget.hidePlaceDetailsWhenDraggingPin,
       onToggleMapType: () {
