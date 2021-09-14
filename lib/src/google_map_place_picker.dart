@@ -169,7 +169,7 @@ class GoogleMapPlacePicker extends StatelessWidget {
         bottom: 40,
         child: FloatingActionButton(
           onPressed: () {
-            onPlacePickedLatLng!(Provider.of<PlaceProvider>(context,listen: false).latLng);
+            onPlacePickedLatLng(Provider.of<PlaceProvider>(context,listen: false).latLng);
           },
           foregroundColor: Colors.white,
           backgroundColor: Colors.red,
