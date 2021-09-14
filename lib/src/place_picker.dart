@@ -348,6 +348,7 @@ class _PlacePickerState extends State<PlacePicker> {
   }
 
   _moveTo(double latitude, double longitude) async {
+    provider!.latLng=LatLng(latitude,longitude);
     GoogleMapController? controller = provider!.mapController;
     if (controller == null) return;
 
