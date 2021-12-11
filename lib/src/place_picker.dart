@@ -24,8 +24,8 @@ class PlacePicker extends StatefulWidget {
     required this.apiKey,
     this.onPlacePicked,
 
-    required this.floatingButtonVisible,
-    required this.floatingDialougVisible,
+    this.floatingButtonVisible = true,
+    this.floatingDialougVisible = false,
     required this.initialPosition,
     this.useCurrentLocation,
     this.desiredLocationAccuracy = LocationAccuracy.high,
@@ -55,7 +55,7 @@ class PlacePicker extends StatefulWidget {
     this.autocompleteTypes,
     this.strictbounds,
     this.region,
-   required this.onPlacePickedLatLng,
+    this.onPlacePickedLatLng,
     this.selectInitialPosition = false,
     this.resizeToAvoidBottomInset = true,
     this.initialSearchString,
@@ -100,7 +100,7 @@ class PlacePicker extends StatefulWidget {
   final List<Component>? autocompleteComponents;
   final bool? strictbounds;
   final String? region;
-  final Function onPlacePickedLatLng;
+  final Function(LatLng)? onPlacePickedLatLng;
 
   /// If true the [body] and the scaffold's floating widgets should size
   /// themselves to avoid the onscreen keyboard whose height is defined by the

@@ -42,7 +42,7 @@ class GoogleMapPlacePicker extends StatelessWidget {
       this.onToggleMapType,
       this.onMyLocation,
       this.onPlacePicked,
-        required this.onPlacePickedLatLng,
+      this.onPlacePickedLatLng,
       this.usePinPointingSearch,
       this.usePlaceDetailSearch,
       this.selectInitialPosition,
@@ -64,7 +64,7 @@ class GoogleMapPlacePicker extends StatelessWidget {
   final MapCreatedCallback? onMapCreated;
   final VoidCallback? onToggleMapType;
   final VoidCallback? onMyLocation;
-  final Function onPlacePickedLatLng;
+  final Function(LatLng)? onPlacePickedLatLng;
   final ValueChanged<PickResult>? onPlacePicked;
 
   final int? debounceMilliseconds;
@@ -169,7 +169,7 @@ class GoogleMapPlacePicker extends StatelessWidget {
         bottom: 40,
         child: FloatingActionButton(
           onPressed: () {
-            onPlacePickedLatLng(Provider.of<PlaceProvider>(context,listen: false).latLng);
+            if(onPlacePickedLatLng != null) onPlacePickedLatLng!(Provider.of<PlaceProvider>(context,listen: false).latLng);
           },
           foregroundColor: Colors.white,
           backgroundColor: Colors.red,
