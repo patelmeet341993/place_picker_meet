@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   final ThemeData lightTheme = ThemeData.light().copyWith(
     // Background color of the FloatingCard
     cardColor: Colors.white,
-    buttonTheme: ButtonThemeData(
+    buttonTheme: const ButtonThemeData(
       // Select here's button color
       buttonColor: Colors.black,
       textTheme: ButtonTextTheme.primary,
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   final ThemeData darkTheme = ThemeData.dark().copyWith(
     // Background color of the FloatingCard
     cardColor: Colors.grey,
-    buttonTheme: ButtonThemeData(
+    buttonTheme: const ButtonThemeData(
       // Select here's button color
       buttonColor: Colors.yellow,
       textTheme: ButtonTextTheme.primary,
@@ -73,10 +73,11 @@ class _HomePageState extends State<HomePage> {
                     MaterialPageRoute(
                       builder: (context) {
                         return PlacePicker(
-                          apiKey: "APIKeys.apiKey",
+                          apiKey: "AIzaSyBhCWbPsgTlsWP0GiZBSYrl3yfdPlBZ7oA",
                           initialPosition: HomePage.kInitialPosition,
                           useCurrentLocation: true,
                           selectInitialPosition: true,
+                          floatingDialougVisible: true,
 
                           //usePlaceDetailSearch: true,
                           onPlacePicked: (result) {

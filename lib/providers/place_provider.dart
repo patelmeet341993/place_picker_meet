@@ -8,10 +8,20 @@ import 'package:place_picker_meet/src/place_picker.dart';
 import 'package:google_maps_webservice/geocoding.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:http/http.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class PlaceProvider extends ChangeNotifier {
+  late GoogleMapsPlaces places;
+  late GoogleMapsGeocoding geocoding;
+  String? sessionToken;
+  bool isOnUpdateLocationCooldown = false;
+  LocationAccuracy? desiredAccuracy;
+  bool isAutoCompleteSearching = false;
+
+  late LatLng _latLng;
+
+  LatLng get latLng => _latLng;
+
   PlaceProvider(
     String apiKey,
     String? proxyBaseUrl,
@@ -33,36 +43,71 @@ class PlaceProvider extends ChangeNotifier {
     );
   }
 
-  static PlaceProvider of(BuildContext context, {bool listen = true}) =>
-      Provider.of<PlaceProvider>(context, listen: listen);
-
-  late GoogleMapsPlaces places;
-  late GoogleMapsGeocoding geocoding;
-  String? sessionToken;
-  bool isOnUpdateLocationCooldown = false;
-  LocationAccuracy? desiredAccuracy;
-  bool isAutoCompleteSearching = false;
-
-  late LatLng _latLng;
-
-  LatLng get latLng => _latLng;
+  static PlaceProvider of(BuildContext context, {bool listen = true}) => Provider.of<PlaceProvider>(context, listen: listen);
 
   set latLng(LatLng value) {
     _latLng = value;
     notifyListeners();
   }
 
+  Future<Position?> getCurrentLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    Position? position;
+    try {
+      /*if (Platform.isIOS) position = await Geolocator.getLastKnownPosition();
+
+      if (position == null || Platform.isAndroid) {
+        position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+      }*/
+
+      position = await Geolocator.getCurrentPosition();
+
+      return position;
+    }
+    on TimeoutException catch (e) {
+      print("Timeout Error in Getting Current Location:${e.message}");
+      return await Geolocator.getLastKnownPosition();
+    }
+    on PermissionDeniedException catch (e) {
+      print("Permission Denied Error in Getting Current Location:${e.message}");
+    }
+    on LocationServiceDisabledException catch (e) {
+      print("Location Service Disabled Error in Getting Current Location:${e}");
+    }
+    catch (e) {
+      print("Error in Getting Current Location:${e}");
+    }
+  }
+
   Future<void> updateCurrentLocation(bool forceAndroidLocationManager) async {
     try {
-      await Permission.location.request();
-      if (await Permission.location.request().isGranted) {
-        currentPosition = await Geolocator.getCurrentPosition(
-            desiredAccuracy: desiredAccuracy ?? LocationAccuracy.best);
-        _latLng=LatLng(currentPosition!.latitude, currentPosition!.longitude);
-      } else {
-        currentPosition = null;
-      }
-    } catch (e) {
+      currentPosition = await getCurrentLocation();
+    }
+    catch (e) {
       print(e);
       currentPosition = null;
     }
