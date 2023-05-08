@@ -289,6 +289,7 @@ class AutoCompleteSearchState extends State<AutoCompleteSearch> {
         strictbounds: widget.strictbounds ?? false,
         region: widget.region,
       );
+      print("Autocomplete Response:${response}");
 
       if (response.errorMessage?.isNotEmpty == true || response.status == "REQUEST_DENIED") {
         if (widget.onSearchFailed != null) {

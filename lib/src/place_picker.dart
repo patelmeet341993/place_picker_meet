@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_api_headers/google_api_headers.dart';
@@ -24,8 +25,8 @@ class PlacePicker extends StatefulWidget {
     required this.apiKey,
     this.onPlacePicked,
 
-    required this.floatingButtonVisible,
-    required this.floatingDialougVisible,
+    this.floatingButtonVisible = true,
+    this.floatingDialougVisible = false,
     required this.initialPosition,
     this.useCurrentLocation,
     this.desiredLocationAccuracy = LocationAccuracy.high,
@@ -55,7 +56,7 @@ class PlacePicker extends StatefulWidget {
     this.autocompleteTypes,
     this.strictbounds,
     this.region,
-   required this.onPlacePickedLatLng,
+    this.onPlacePickedLatLng,
     this.selectInitialPosition = false,
     this.resizeToAvoidBottomInset = true,
     this.initialSearchString,
@@ -100,7 +101,7 @@ class PlacePicker extends StatefulWidget {
   final List<Component>? autocompleteComponents;
   final bool? strictbounds;
   final String? region;
-  final Function onPlacePickedLatLng;
+  final Function(LatLng)? onPlacePickedLatLng;
 
   /// If true the [body] and the scaffold's floating widgets should size
   /// themselves to avoid the onscreen keyboard whose height is defined by the
@@ -199,7 +200,8 @@ class _PlacePickerState extends State<PlacePicker> {
   }
 
   Future<PlaceProvider> _initPlaceProvider() async {
-    final headers = await GoogleApiHeaders().getHeaders();
+    Map<String, String> headers = await GoogleApiHeaders().getHeaders();
+    headers['origin'] = "*";
     final provider = PlaceProvider(
       widget.apiKey,
       widget.proxyBaseUrl,
@@ -285,7 +287,7 @@ class _PlacePickerState extends State<PlacePicker> {
             ? IconButton(
                 onPressed: () => Navigator.maybePop(context),
                 icon: Icon(
-                  Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
+                  kIsWeb ? (Icons.arrow_back) : (Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back),
                 ),
                 padding: EdgeInsets.zero)
             : SizedBox(width: 15),
@@ -301,6 +303,7 @@ class _PlacePickerState extends State<PlacePicker> {
                 _pickPrediction(prediction);
               },
               onSearchFailed: (status) {
+                print("Search Failed:${status}");
                 if (widget.onAutoCompleteFailed != null) {
                   widget.onAutoCompleteFailed!(status);
                 }
@@ -383,7 +386,8 @@ class _PlacePickerState extends State<PlacePicker> {
               }
             }
           });
-    } else {
+    }
+    else {
       return FutureBuilder(
         future: Future.delayed(Duration(milliseconds: 1)),
         builder: (context, snap) {
@@ -421,6 +425,8 @@ class _PlacePickerState extends State<PlacePicker> {
         provider!.switchMapType();
       },
       onMyLocation: () async {
+        print("On MyLocation called");
+
         // Prevent to click many times in short period.
         if (provider!.isOnUpdateLocationCooldown == false) {
           provider!.isOnUpdateLocationCooldown = true;
