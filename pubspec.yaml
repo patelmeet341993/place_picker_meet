@@ -4,20 +4,21 @@ version: 1.0.0
 homepage: https://github.com/patelmeet341993/place_picker_meet
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  google_maps_flutter: ^2.2.6
-  google_maps_flutter_web: ^0.4.0+8
-  geolocator: ^9.0.2
-  provider: ^6.0.3
-  google_maps_webservice: ^0.0.20-nullsafety.5
-  google_api_headers: 1.3.0
-  tuple: ^2.0.1
-  http: ^0.13.6
+  google_maps_flutter: ^2.5.0
+  google_maps_flutter_web: ^0.5.4+2
+  geolocator: ^10.1.0
+  provider: ^6.0.5
+#  google_maps_webservice: ^0.0.20-nullsafety.5
+  flutter_google_maps_webservices: ^1.1.1
+  google_api_headers: ^2.0.3
+  tuple:
+  http:
 
 dev_dependencies:
   flutter_test:

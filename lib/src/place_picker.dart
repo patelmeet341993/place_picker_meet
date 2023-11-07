@@ -2,16 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_google_maps_webservices/places.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_api_headers/google_api_headers.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:place_picker_meet/place_picker_meet.dart';
 import 'package:place_picker_meet/providers/place_provider.dart';
 import 'package:place_picker_meet/src/autocomplete_search.dart';
 import 'package:place_picker_meet/src/controllers/autocomplete_search_controller.dart';
 import 'package:place_picker_meet/src/google_map_place_picker.dart';
 import 'package:place_picker_meet/src/utils/uuid.dart';
-import 'package:google_maps_webservice/places.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'dart:io' show Platform;
@@ -255,7 +254,7 @@ class _PlacePickerState extends State<PlacePicker> {
             children.addAll([
               Icon(
                 Icons.error_outline,
-                color: Theme.of(context).errorColor,
+                color: Theme.of(context).colorScheme.error,
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 16),
@@ -303,7 +302,7 @@ class _PlacePickerState extends State<PlacePicker> {
                 _pickPrediction(prediction);
               },
               onSearchFailed: (status) {
-                print("Search Failed:${status}");
+                print("Search Failed:$status");
                 if (widget.onAutoCompleteFailed != null) {
                   widget.onAutoCompleteFailed!(status);
                 }
